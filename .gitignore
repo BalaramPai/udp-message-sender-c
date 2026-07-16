@@ -1,0 +1,26 @@
+# Compiled Executables
+sender
+
+# Object Files
+*.o
+
+# Executables
+*.out
+
+# Core Dumps
+core
+
+# Editor Files
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Temporary Files
+*.swp
+*.swo
+
+# Logs
+*.log

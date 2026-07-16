@@ -362,6 +362,139 @@ If testing across different machines, ensure the firewall allows UDP traffic on 
 
 ---
 
+# Running Across Different Devices
+
+This project is not limited to communication on the local machine (`127.0.0.1`).
+
+As long as both devices are connected to the same network (Wi-Fi or LAN), the sender can transmit UDP packets to another computer, laptop, tablet or phone.
+
+## Step 1
+
+Find the receiver's IPv4 address.
+
+### Windows
+
+```cmd
+ipconfig
+```
+
+Look for
+
+```
+IPv4 Address
+```
+
+Example
+
+```
+192.168.0.111
+```
+
+---
+
+### Linux / Ubuntu
+
+```bash
+hostname -I
+```
+
+or
+
+```bash
+ip addr
+```
+
+---
+
+### Android (Termux)
+
+```bash
+ip addr
+```
+
+Look for the address under
+
+```
+wlan0
+```
+
+Example
+
+```
+192.168.0.188
+```
+
+---
+
+## Step 2
+
+Replace the loopback address
+
+```c
+servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+```
+
+with the receiver's IP address.
+
+Example
+
+```c
+servaddr.sin_addr.s_addr = inet_addr("192.168.0.188");
+```
+
+---
+
+## Step 3
+
+Start a UDP receiver on the destination device.
+
+Examples
+
+Netcat
+
+```bash
+nc -u -l 8888
+```
+
+Python
+
+```bash
+python3 receiver.py
+```
+
+---
+
+## Step 4
+
+Run the sender.
+
+```bash
+./sender "Hello from another device!"
+```
+
+The receiver should display the transmitted message.
+
+---
+
+## Requirements
+
+For successful communication:
+
+- Both devices should be connected to the same Wi-Fi or LAN.
+- The receiver must be listening on the specified UDP port.
+- Firewalls should allow UDP traffic on the chosen port.
+- The sender must use the receiver's IPv4 address.
+
+---
+
+## Notes
+
+`127.0.0.1` is the **loopback address**.
+
+It always refers to the machine on which the program is currently running.
+
+To communicate with another device, replace it with the IPv4 address of that device.
+
 # Future Improvements
 
 - Allow custom IP address from command line
